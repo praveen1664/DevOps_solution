@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: litcoin-svc
+  labels:
+    app: litcoin
+spec:
+  ports:
+  - protocol: TCP
+    port: 9332
+    targetPort: 9332
+  selector:
+    app: litcoin
+  type: NodePort
+  externalTrafficPolicy: Cluster

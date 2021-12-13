@@ -1,0 +1,5 @@
+sed -i 's/^# deb/deb/' logfile1
+awk '{gsub(/^# deb/,deb); print}' <logfile2 > tempfile && mv -f tempfile logfile2
+
+we are replacing ^# deb/deb in attached logfile
+

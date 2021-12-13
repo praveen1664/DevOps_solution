@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata: 
+  annotations: 
+    deployment.kubernetes.io/revision: "2"
+  labels: 
+    app: litcoin
+  name: litcoin
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels: 
+      app: litcoin
+  serviceName: litcoin
+  template: 
+    metadata: 
+      creationTimestamp: ~
+      labels: 
+        app: litcoin
+    spec: 
+      containers: 
+        - 
+          image: "docker.repo.com/centos/litcoin:latest"
+          imagePullPolicy: Always
+          name: litcoin
+          ports: 
+            - 
+              containerPort: 9332
+              protocol: TCP
+          resources: 
+            limits: 
+              memory: 1Gi
+            requests: 
+              memory: 1Gi
+          restartPolicy: Always
+          securityContext: 
+            allowPrivilegeEscalation: false
+            procMount: Default
+            runAsUser: 1001
+          volumeMounts: 
+            - 
+              mountPath: /home/litecoin/
+              name: litcoin-pvc
+      volumes: 
+        - 
+          name: litcoin-pvc
+          persistentVolumeClaim: 
+            claimName: litcoin-pvc

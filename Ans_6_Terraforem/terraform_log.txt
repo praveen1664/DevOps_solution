@@ -1,0 +1,92 @@
+C:\Users\Administrator\Desktop\Developement_Praveen\praveen>terraform apply
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.prod-ci-group.aws_iam_group.this[0] will be created
+  + resource "aws_iam_group" "this" {
+      + arn       = (known after apply)
+      + id        = (known after apply)
+      + name      = "prod-ci-group"
+      + path      = "/"
+      + unique_id = (known after apply)
+    }
+
+  # module.prod-ci-group.aws_iam_group_membership.this[0] will be created
+  + resource "aws_iam_group_membership" "this" {
+      + group = (known after apply)
+      + id    = (known after apply)
+      + name  = "prod-ci-group"
+      + users = [
+          + "Praveen",
+        ]
+    }
+
+  # module.prod-ci-user.aws_iam_user.this[0] will be created
+  + resource "aws_iam_user" "this" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "praveen"
+      + path          = "/"
+      + tags_all      = (known after apply)
+      + unique_id     = (known after apply)
+    }
+
+  # module.prod_ci_role.aws_iam_role.this[0] will be created
+  + resource "aws_iam_role" "this" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + AWS     = "arn:aws:iam::835367859851:group"
+                          + Service = "codedeploy.amazonaws.com"
+                        }
+                      + Sid       = ""
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "prod-ci-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "Role" = "Prod-ci"
+        }
+      + tags_all              = {
+          + "Role" = "Prod-ci"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy {
+          + name   = (known after apply)
+          + policy = (known after apply)
+        }
+    }
+
+Plan: 4 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+module.prod-ci-group.aws_iam_group.this[0]: Creating...
+module.prod-ci-user.aws_iam_user.this[0]: Creating...
+module.prod_ci_role.aws_iam_role.this[0]: Creating...
+module.prod-ci-group.aws_iam_group.this[0]: Creation complete after 3s [id=prod-ci-group]
+module.prod-ci-user.aws_iam_user.this[0]: Creation complete after 3s [id=praveen]
+module.prod-ci-group.aws_iam_group_membership.this[0]: Creating...
+module.prod-ci-group.aws_iam_group_membership.this[0]: Creation complete after 3s [id=prod-ci-group]

@@ -1,0 +1,41 @@
+pipeline {
+    agent none
+    stages {
+      stage('Git clone and setup') {
+        agent any
+        steps {
+          git branch: "master",
+                        credentialsId: 'praveen-praveen',
+                        url: 'https://github.com/praveen/jenkins.git'
+        }
+      }
+
+      stage('Docker Build') {
+        agent any
+        steps {
+          sh 'docker build -t praveen/litcoincoin:latest .'
+        }
+      }
+
+      stage('Docker Push') {
+        agent any
+        steps {
+          withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+            sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+            sh 'docker push praveen/litcoincoin:latest'
+          }
+        }
+      }
+
+      stage('Apply Kubernetes Files for deployment') {
+        steps {
+          withKubeConfig([credentialsId: 'kubeconfigexample']) {
+            sh 'kubectl apply -f litecoinpv.yaml'
+            sh 'kubectl apply -f litecoinpvc.yaml'
+            sh 'kubectl apply -f litecoinstatefulset.yaml'
+            sh 'kubectl apply -f litecoinservice.yaml'
+        }
+      }
+    }
+
+}
