@@ -1,4 +1,4 @@
-"# DevOps-Exam" 
+# DevOps-Exam
 Question1:
 
 I have referred official links to prepare litcoin Dockerfile
